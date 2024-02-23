@@ -1,0 +1,51 @@
+// Jenkinsfile
+
+pipeline {
+    agent any
+
+    stages {
+        stage('Checkout') {
+            steps {
+                // Checkout the source code from the GitHub repository
+                script {
+                    checkout scm
+                }
+            }
+        }
+
+        stage('Build') {
+            steps {
+                // Build the Maven project
+                script {
+                    def mvnHome = tool 'Maven'
+                    sh "${mvnHome}/bin/mvn clean install"
+                }
+            }
+        }
+
+        stage('Test') {
+            steps {
+                // Run tests (if applicable)
+                script {
+                    def mvnHome = tool 'Maven'
+                    sh "${mvnHome}/bin/mvn test"
+                }
+            }
+        }
+
+        stage('Deploy') {
+            steps {
+                // Deploy or publish artifacts (if applicable)
+                script {
+                    // Add deployment steps here
+                }
+            }
+        }
+    }
+
+    post {
+        always {
+            // Clean up steps (if any)
+        }
+    }
+}
