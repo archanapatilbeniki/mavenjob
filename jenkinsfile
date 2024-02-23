@@ -47,7 +47,7 @@ pipeline {
         
     post {
         always {
-            // Clean up steps (if any)
+            emailext body: "Build ${currentBuild.result}: ${env.BUILD_URL}", subject: "Build Notification", to: "rooparchana.patil@gmail.com"
         }
     }
 }
