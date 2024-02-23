@@ -1,12 +1,9 @@
-// Jenkinsfile
-
 pipeline {
     agent any
 
     stages {
         stage('Checkout') {
             steps {
-                // Checkout the source code from the GitHub repository
                 script {
                     checkout([$class: 'GitSCM', branches: [[name: '*/main']], userRemoteConfigs: [[url: 'https://github.com/archanapatilbeniki/mavenjob.git']]])
                 }
@@ -15,7 +12,6 @@ pipeline {
 
         stage('Build') {
             steps {
-                // Build the Maven project
                 script {
                     def mvnHome = tool 'Maven'
                     sh "${mvnHome}/bin/mvn clean install"
@@ -25,23 +21,24 @@ pipeline {
 
         stage('Test') {
             steps {
-                // Run tests (if applicable)
                 script {
                     def mvnHome = tool 'Maven'
                     sh "${mvnHome}/bin/mvn test"
                 }
             }
         }
+
         stage('Deploy') {
             steps {
                 script {
                     // Assuming you have SSH private key (for passwordless authentication) configured in Jenkins credentials
                     sshagent(['ssh-jenkins']) {
-                    sh """
-                    ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null roopa-j@192.168.1.2 "cd /home/roopa-1/Documents/mvn-1/ && java -jar HelloWorld.jar"
-                    """
+                        sh """
+                        ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null roopa-j@192.168.1.2 "cd /home/roopa-1/Documents/mvn-1/ && java -jar HelloWorld.jar"
+                        """
+                    }
                 }
-            }   
+            }
         }
     }
         
