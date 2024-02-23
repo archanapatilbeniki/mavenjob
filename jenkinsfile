@@ -37,7 +37,6 @@ pipeline {
                 script {
                     // Assuming you have SSH private key (for passwordless authentication) configured in Jenkins credentials
                     sshagent(['ssh-jenkins']) {
-                    // Replace '192.168.1.2' with the IP address of your virtual machine
                     sh """
                     ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null roopa-j@192.168.1.2 "cd /home/roopa-1/Documents/mvn-1/ && java -jar HelloWorld.jar"
                     """
